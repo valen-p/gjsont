@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>View GeoJSON from AGOL</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.27/"></script>
+</head>
+<body>
+  <div id="viewDiv" style="height: 100vh;"></div>
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/GeoJSONLayer"
+    ], function(Map, MapView, GeoJSONLayer) {
+      
+      // URL to the GeoJSON file
+      const geojsonUrl = "https://arcg.is/0T5WmL";
+      
+      // Define the GeoJSON layer
+      const geojsonLayer = new GeoJSONLayer({
+        url: geojsonUrl,
+      });
+
+      // Create the Map
+      const map = new Map({
+        basemap: "topo-vector", // Basemap style
+        layers: [geojsonLayer]
+      });
+
+      // Create the MapView
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-98.5795, 39.8283], // Default center (USA)
+        zoom: 4 // Default zoom level
+      });
+    });
+  </script>
+</body>
+</html>
