@@ -1,32 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>View GeoJSON from AGOL</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display GeoJSON with AGOL</title>
   <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.27/"></script>
+  <style>
+    html, body, #viewDiv {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
 <body>
-  <div id="viewDiv" style="height: 100vh;"></div>
+  <div id="viewDiv"></div>
   <script>
     require([
       "esri/Map",
       "esri/views/MapView",
       "esri/layers/GeoJSONLayer"
     ], function(Map, MapView, GeoJSONLayer) {
-      
-      // URL to the GeoJSON file
+      // Define GeoJSON URL from AGOL
       const geojsonUrl = "https://arcg.is/0T5WmL";
-      
-      // Define the GeoJSON layer
+
+      // Create GeoJSON Layer
       const geojsonLayer = new GeoJSONLayer({
         url: geojsonUrl,
+        renderer: {
+          type: "simple",
+          symbol: {
+            type: "simple-marker", 
+            color: "blue",
+            size: 8,
+            outline: {
+              color: "white",
+              width: 1
+            }
+          }
+        },
+        popupTemplate: {
+          title: "{name}", // Adjust based on your GeoJSON properties
+          content: "{description}" // Adjust based on your GeoJSON properties
+        }
       });
 
-      // Create the Map
+      // Create Map and add the GeoJSON layer
       const map = new Map({
-        basemap: "topo-vector", // Basemap style
+        basemap: "topo-vector",
         layers: [geojsonLayer]
       });
 
@@ -34,8 +56,8 @@
       const view = new MapView({
         container: "viewDiv",
         map: map,
-        center: [-98.5795, 39.8283], // Default center (USA)
-        zoom: 4 // Default zoom level
+        zoom: 10,
+        center: [-118.805, 34.027] // Adjust to your GeoJSON's approximate location
       });
     });
   </script>
